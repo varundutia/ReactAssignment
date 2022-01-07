@@ -1,0 +1,12 @@
+.product-main{
+    text-align: center;
+    border: 1px solid black;
+    width: 300px;
+    height: 350px;
+    margin: 20px;
+}
+
+.product-image{
+    width: 180px;
+    height: 200px;
+}
