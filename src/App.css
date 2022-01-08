@@ -17,6 +17,7 @@ select{
   height: 30px;
   background-color: #59595c;
   color: white;
+  border-radius: 10px;
 }
 
 .wrapper{
