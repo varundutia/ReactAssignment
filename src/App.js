@@ -10,7 +10,14 @@ function App() {
   
   const getToday = () => {
     let today = new Date();
-    return today.toDateString();
+    const date = ('0' + today.getDate()).slice(-2);
+    const month = ('0' + (today.getMonth() + 1)).slice(-2);
+    const year = today.getFullYear();
+
+    let dateToday = date + month + year;
+    console.log(date + month + year);
+
+    return dateToday;
   };
 
   const retriveData = () =>{
@@ -54,7 +61,7 @@ function App() {
         ProductList.map((item,index)=>{
           let finalCost = (currency === "INR")?item.cost:(item.cost/conversion);
           return(
-            <Product key={index} link={require(""+item.link)} name={item.name} cost={finalCost}/>
+            <Product key={index} link={require(""+item.link)} name={item.name} cost={finalCost} type={currency}/>
           )
         })
       }
@@ -67,7 +74,7 @@ function App() {
               <option value="INR">INR</option>
               <option value="USD">USD</option>
           </select>
-      </label>
+      </label> 
     </div>
   );
 }
