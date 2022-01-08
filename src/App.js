@@ -6,37 +6,43 @@ import { retrieveData } from './Helpers/RetrieveData';
 import { getToday } from './Helpers/GetToday';
 
 function App() {
+  //Constants
+  const DATA_STRING = "data";
+  const CONVERSION_RATE_STRING = "conversion_rates";
+  const CONVERSION_STRING = "conversion";
+  const INR = 'INR';
+  const USD = "USD";
   const [conversion, setConversion] = useState(0);
-  const [currency,setCurrency] = useState("INR");
-  
+  const [currency,setCurrency] = useState(INR);
 
+  //Use Effect
   useEffect(() => {
 
-    const localData = JSON.parse(localStorage.getItem("data"));
+    const localData = JSON.parse(localStorage.getItem(DATA_STRING));
 
     if(localData != null){
-      if (localData["date"] !== getToday()) {
+      if (localData[DATA_STRING] !== getToday()) {
           retrieveData().then(raw =>{
-          const data = {
-            date: getToday(),
-            conversion: raw["conversion_rates"]["INR"]
-          };
-          localStorage.setItem("data", JSON.stringify(data));
-          setConversion(data["conversion"]);
+            const data = {
+              date: getToday(),
+              conversion: raw[CONVERSION_RATE_STRING][INR]
+            };
+          localStorage.setItem(DATA_STRING, JSON.stringify(data));
+          setConversion(data[CONVERSION_STRING]);
         });
       } 
       else {
-        setConversion(localData["conversion"]);
+        setConversion(localData[CONVERSION_STRING]);
       }
     }
     else {
       retrieveData().then(raw =>{
         const data = {
           date: getToday(),
-          conversion: raw["conversion_rates"]["INR"]
+          conversion: raw[CONVERSION_RATE_STRING][INR]
         };
-        localStorage.setItem("data", JSON.stringify(data));
-        setConversion(data["conversion"]);
+        localStorage.setItem(DATA_STRING, JSON.stringify(data));
+        setConversion(data[CONVERSION_STRING]);
       });
     }
   }, []);
@@ -45,7 +51,7 @@ function App() {
     <div className="App">
       {
         ProductList.map((item,index)=>{
-          let finalCost = (currency === "INR")?item.cost:(Math.round(item.cost/conversion* 100)/100);
+          let finalCost = (currency === INR)?item.cost:(Math.round(item.cost/conversion* 100)/100);
           return(
             <Product key={index} link={require(""+item.link)} name={item.name} cost={finalCost} type={currency}/>
           )
@@ -59,8 +65,8 @@ function App() {
                 name="currency"
                 onChange={(event)=>{setCurrency(event.target.value)}}
               >
-                  <option value="INR">INR</option>
-                  <option value="USD">USD</option>
+                  <option value="INR">{INR}</option>
+                  <option value="USD">{USD}</option>
               </select>
           </label>
         </div> 
